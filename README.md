@@ -30,7 +30,7 @@ public function registerBundles()
 }
 ```
 
-## Enabled
+## Enable
 
 When the PR [#1597](https://github.com/sonata-project/SonataAdminBundle/pull/1597) of SonataAdminBundle will be merged, the extension will be automatically enabled for all admins.
 
