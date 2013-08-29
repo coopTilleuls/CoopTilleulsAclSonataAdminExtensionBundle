@@ -6,7 +6,7 @@
 
 
     <parameters>
-        <parameter key="coop_tilleuls_acl_sonata_admin_extension.acl.extension.class">CoopTilleuls\Bundle\AdminAclBundle\Admin\AclAdminExtension</parameter>
+        <parameter key="coop_tilleuls_acl_sonata_admin_extension.acl.extension.class">CoopTilleuls\Bundle\AclSonataAdminExtensionBundle\Admin\AclAdminExtension</parameter>
     </parameters>
 
     <services>
