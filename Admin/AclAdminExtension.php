@@ -53,16 +53,16 @@ class AclAdminExtension extends AdminExtension
         // Get identity ACL identifier
         $identifier = sprintf('%s-%s', $securityIdentity->getClass(), $securityIdentity->getUsername());
 
-        $identityStmt = $this->databaseConnection->prepare('SELECT id FROM acl_security_identities WHERE identifier LIKE :identifier');
-        $identityStmt->bindValue('identifier', $this->escape($identifier));
+        $identityStmt = $this->databaseConnection->prepare('SELECT id FROM acl_security_identities WHERE identifier = :identifier');
+        $identityStmt->bindValue('identifier', $identifier);
         $identityStmt->execute();
 
         $identityId = $identityStmt->fetchColumn();
 
         // Get class ACL identifier
         $classType = $admin->getClass();
-        $classStmt = $this->databaseConnection->prepare('SELECT id FROM acl_classes WHERE class_type LIKE :classType');
-        $classStmt->bindValue('classType', $this->escape($classType));
+        $classStmt = $this->databaseConnection->prepare('SELECT id FROM acl_classes WHERE class_type = :classType');
+        $classStmt->bindValue('classType', $classType);
         $classStmt->execute();
 
         $classId = $classStmt->fetchColumn();
@@ -94,22 +94,5 @@ class AclAdminExtension extends AdminExtension
 
         // Display an empty list
         $query->andWhere('1 = 2');
-    }
-
-    /**
-     * Escapes backslash for MySQL style
-     *
-     * @param $data
-     * @return string
-     * @todo patch PDO or Doctrine MySQL driver
-     * @see http://dev.mysql.com/doc/refman/5.1/en/string-literals.html
-     */
-    protected function escape($data)
-    {
-        if ('mysql' === $this->databaseConnection->getDatabasePlatform()->getName()) {
-            return str_replace('\\', '\\\\', $data);
-        }
-
-        return $data;
     }
 }
