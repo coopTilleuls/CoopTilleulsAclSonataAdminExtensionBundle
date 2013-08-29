@@ -52,4 +52,4 @@ sonata_admin:
 
 ## Credits
 
-Wrote by [Kévin Dunglas](http://dunglas.fr) for [La Coopérative des Tilleuls](http://les-tilleuls.coop).
+Created by [Kévin Dunglas](http://dunglas.fr) for [La Coopérative des Tilleuls](http://les-tilleuls.coop).
