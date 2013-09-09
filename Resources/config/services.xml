@@ -13,7 +13,7 @@
         <service id="coop_tilleuls_acl_sonata_admin_extension.acl.extension" class="%coop_tilleuls_acl_sonata_admin_extension.acl.extension.class%">
             <argument type="service" id="security.context" />
             <argument type="service" id="security.acl.dbal.connection" />
-            <tag name="sonata.admin.extension" />
+            <tag name="sonata.admin.extension" global="true" />
         </service>
     </services>
 
