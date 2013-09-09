@@ -32,18 +32,7 @@ public function registerBundles()
 
 ## Enable
 
-When the PR [#1597](https://github.com/sonata-project/SonataAdminBundle/pull/1597) of SonataAdminBundle will be merged, the extension will be automatically enabled for all admins.
-
-For now, you can manually enabled the extension in your `config.yml` file.
-
-```yaml
-sonata_admin:
-        extensions:
-            coop_tilleuls_acl_sonata_admin_extension.acl.extension:
-                admins:
-                    - acme.demo.admin.article # Replace this line with your own admin id
-                    - acme.demo.admin.comment
-```
+This extension is automatically enabled for all admins.
 
 ## TODO
 
