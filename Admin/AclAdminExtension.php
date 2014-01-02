@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) La Coopérative des Tilleuls <contact@les-tilleuls.coop>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace CoopTilleuls\Bundle\AclSonataAdminExtensionBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AdminExtension;
@@ -10,6 +17,11 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
+/**
+ * Admin extension filtering the list
+ *
+ * @author Kévin Dunglas <kevin@les-tilleuls.coop>
+ */
 class AclAdminExtension extends AdminExtension
 {
     /**
