@@ -53,8 +53,8 @@ class AclAdminExtension extends AdminExtension
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
     {
-        // Don't filter for admins and for not ACL enabled classes
-        if (!$admin->isAclEnabled() || $admin->isGranted(sprintf($admin->getSecurityHandler()->getBaseRole($admin), 'ADMIN'))) {
+        // Don't filter for admins and for not ACL enabled classes and for command cli
+        if (!$admin->isAclEnabled() || !$this->securityContext->getToken() || $admin->isGranted(sprintf($admin->getSecurityHandler()->getBaseRole($admin), 'ADMIN'))) {
             return;
         }
 
