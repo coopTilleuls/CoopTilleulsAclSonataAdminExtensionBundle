@@ -26,7 +26,7 @@ public function registerBundles()
 {
     return array(
         // ...
-        new CoopTilleuls\Bundle\AclSonataAdminExtensionBundle\CoopTilleulsAclSonataAdminExtensionBundle(),
+        new MrGreenStuff\Bundle\AclSonataAdminExtensionBundle\CoopTilleulsAclSonataAdminExtensionBundle(),
         // ...
     );
 }

@@ -10,7 +10,7 @@
  * Enhanced by JUILLARD Yoann
  */
 
-namespace CoopTilleuls\Bundle\AclSonataAdminExtensionBundle\Admin;
+namespace MrGreenStuff\Bundle\AclSonataAdminExtensionBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
