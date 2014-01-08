@@ -1,5 +1,5 @@
 {
-    "name": "tilleuls/acl-sonata-admin-extension-bundle",
+    "name": "mrgreenstuff/acl-sonata-admin-extension-bundle",
     "type": "symfony-bundle",
     "description": "ACL list filtering for SonataAdmin",
     "keywords": ["sonata", "admin", "acl"],
@@ -10,6 +10,10 @@
             "name": "Kévin Dunglas",
             "email": "kevin@les-tilleuls.coop",
             "homepage": "http://dunglas.fr"
+        },
+		{
+            "name": "JUILLARD Yoann",
+            "email": "juillard?yoann@gmail.com"
         }
     ],
     "require": {
@@ -17,9 +21,9 @@
         "sonata-project/admin-bundle": "~2.2,>=2.2.2"
     },
     "autoload": {
-        "psr-0": { "CoopTilleuls\\Bundle\\AclSonataAdminExtensionBundle": "" }
+        "psr-0": { "MrGreenStuff\\Bundle\\AclSonataAdminExtensionBundle": "" }
     },
-    "target-dir": "CoopTilleuls/Bundle/AclSonataAdminExtensionBundle",
+    "target-dir": "MrGreenStuff/Bundle/AclSonataAdminExtensionBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "2.3.x-dev"
