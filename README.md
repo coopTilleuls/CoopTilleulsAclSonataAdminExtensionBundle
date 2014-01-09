@@ -1,5 +1,7 @@
 # ACL extension for Sonata Admin
 
+### This bundle is a fork of [CoopTilleulsAclSonataAdminExtensionBundle](https://github.com/coopTilleuls/CoopTilleulsAclSonataAdminExtensionBundle)
+
 This bundle provides ACL list filtering for [SonataAdminBundle](https://github.com/sonata-project/SonataAdminBundle).
 When enabled, list screens only display data the logged in user has right to view.
 
@@ -14,7 +16,7 @@ Be sure that SonataAdminBundle is working and has [ACL enabled](http://sonata-pr
 Install this bundle using composer:
 
 ```
-composer require tilleuls/acl-sonata-admin-extension-bundle
+composer require mrgreenstuff/acl-sonata-admin-extension-bundle
 ```
 
 Register the bundle in your AppKernel:
@@ -26,7 +28,7 @@ public function registerBundles()
 {
     return array(
         // ...
-        new MrGreenStuff\Bundle\AclSonataAdminExtensionBundle\CoopTilleulsAclSonataAdminExtensionBundle(),
+        new MrGreenStuff\Bundle\AclSonataAdminExtensionBundle\MrGreenStuffAclSonataAdminExtensionBundle(),
         // ...
     );
 }
@@ -36,15 +38,12 @@ public function registerBundles()
 
 This extension is automatically enabled for all admins.
 
-## TODO
+##Special case (Master ACL Entity)
 
-* Test with other DBMSs than MySQL
-* Write tests
+TODO
 
 ## Credits
 
 Created by [Kévin Dunglas](http://dunglas.fr) for [La Coopérative des Tilleuls](http://les-tilleuls.coop).
 
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/coopTilleuls/cooptilleulsaclsonataadminextensionbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
+Enhanced by JUILLARD Yoann
