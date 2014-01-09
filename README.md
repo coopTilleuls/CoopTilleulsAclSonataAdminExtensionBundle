@@ -60,7 +60,7 @@ This extension is automatically enabled for all admins.
 - Admin keep SUPER_ADMIN role (normal behavior)
     
 ### Configuration :
-- Create method : getMasterACLclass() on your sonata admin classes (only classes where you want to enabled the behavior). This methos must return a string off master entity ACL like :
+- Create method : getMasterACLclass() on your sonata admin classes (only classes where you want to enabled the behavior). This method must return a string of master entity ACL like :
     
 ```php
 /*In Shop and Product admin classes*/
