@@ -63,16 +63,16 @@ This extension is automatically enabled for all admins.
 - Create method : getMasterACLclass() on your sonata admin classes (only classes where you want to enabled the behavior). This methos must return a string off master entity ACL like :
     
 ```php
-//In Shop and Product admin classes
+/*In Shop and Product admin classes*/
 public function getMasterACLclass(){
     return 'Acme\DemoBundle\Entity\Country';
 }
 ```
     
-- Create method getPathToMasterACL() on your sonata admin classes (only classes where you want to enabled the behavior). This methos must return a array like :
+- Create method getPathToMasterACL() on your sonata admin classes (only classes where you want to enabled the behavior). This method must return a array like :
     
 ```php
-//In Shop admin class
+/*In Shop admin class*/
 public function getPathToMasterACL(){
     return  array(
                 array('coutry','c')
@@ -80,15 +80,15 @@ public function getPathToMasterACL(){
 }
 //Where 'country' is the property name of the Shop entity who made the relation with Country Entity and 'c' a unique identifier (IMPORTANT the unique shortcut identifier CANNOT BE 'o' because 'o' is the default identifier of Sonata Admin)
     
-//In Product admin class
+/*In Product admin class*/
 public function getPathToMasterACL(){
     return  array(
                  array('shop','s'),
                  array('coutry','c')
                 );
 }
-//BE CAREFULL WHITH ORDER IN ARRAY IT MUST BE parent->grandParent->grandGrandParent... untill the MASTER ACL CLASS DEFINED ABOVE
 ```
+#### BE CAREFULL WHITH ORDER IN ARRAY IT MUST BE parent->grandParent->grandGrandParent... untill the MASTER ACL CLASS DEFINED ABOVE
 
 
 ## Credits
