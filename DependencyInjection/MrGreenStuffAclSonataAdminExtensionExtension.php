@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
-class CoopTilleulsAclSonataAdminExtensionExtension extends Extension
+class MrGreenStuffAclSonataAdminExtensionExtension extends Extension
 {
     /**
      * {@inheritDoc}
