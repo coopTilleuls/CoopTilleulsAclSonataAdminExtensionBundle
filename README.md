@@ -40,7 +40,7 @@ This extension is automatically enabled for all admins.
 
 ##Special case (Master ACL Entity)
 
-TODO
+TODO DOCUMENATION
 
 ## Credits
 
