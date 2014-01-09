@@ -38,24 +38,26 @@ public function registerBundles()
 
 This extension is automatically enabled for all admins.
 
-##Special case (Master ACL Entity) - Enhancement By JUILLARD YOANN
+## Special case (Master ACL Entity)
+#### Enhancement By JUILLARD YOANN
 
 ### Application example :
 
-### 3 Tables : Shop, Product and Country
+#### 3 Tables : Shop, Product and Country
 - Between this tables relation ManyToOne (1 Country have N Shop) (1 Shop have N products). It should be work on all relation types but it's not tested.
 
-### 4 Users :
+#### 4 Users :
 
 - Admin (SUPER_ADMIN)
 - MainManager (NOT SUPER ADMIN !)
 - EnglandManager
 - FranceManager
 
-### Behavior expected :
+###" Behavior expected :
 
 - MainManager have OPERATOR ACL on all Countries so he can access to all shop and products of the matching country (even if ACL record for him not exists but because they have ACL access to the parent or the grand parent in this case all countries)
 - EnglandManager or FranceManager can acces to all shop and products of the matching coutry (even if the products or shop has been created by MainManager or the SUPER_ADMIN without ACLs for this users but because they have ACL acces to the parent or the grand parent in this case only one country)
+- Admin keep SUPER_ADMIN role (normal behavior)
     
 ### Configuration :
 - Create method : getMasterACLclass() on your sonata admin classes (only classes where you want to enabled the behavior). This methos must return a string off master entity ACL like :
