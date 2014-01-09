@@ -16,6 +16,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
-class CoopTilleulsAclSonataAdminExtensionBundle extends Bundle
+class MrGreenStuffSonataAdminExtensionBundle extends Bundle
 {
 }
