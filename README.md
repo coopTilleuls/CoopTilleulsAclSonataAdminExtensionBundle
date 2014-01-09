@@ -53,7 +53,7 @@ This extension is automatically enabled for all admins.
 - EnglandManager
 - FranceManager
 
-###" Behavior expected :
+#### Behavior expected :
 
 - MainManager have OPERATOR ACL on all Countries so he can access to all shop and products of the matching country (even if ACL record for him not exists but because they have ACL access to the parent or the grand parent in this case all countries)
 - EnglandManager or FranceManager can acces to all shop and products of the matching coutry (even if the products or shop has been created by MainManager or the SUPER_ADMIN without ACLs for this users but because they have ACL acces to the parent or the grand parent in this case only one country)
