@@ -7,7 +7,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CoopTilleuls\Bundle\AclSonataAdminExtensionBundle\DependencyInjection;
+namespace MrGreenStuff\Bundle\AclSonataAdminExtensionBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
-class CoopTilleulsAclSonataAdminExtensionExtension extends Extension
+class MrGreenStuffAclSonataAdminExtensionExtension extends Extension
 {
     /**
      * {@inheritDoc}

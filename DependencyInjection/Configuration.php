@@ -5,9 +5,14 @@
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
+ *
+ * (c) JUILLARD YOANN <juillard.yoann@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE2.
  */
 
-namespace CoopTilleuls\Bundle\AclSonataAdminExtensionBundle\DependencyInjection;
+namespace MrGreenStuff\Bundle\AclSonataAdminExtensionBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -27,7 +32,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('coop_tilleuls_acl_sonata_admin_extension');
+        $treeBuilder->root('mr_green_stuff_acl_sonata_admin_extension');
 
         return $treeBuilder;
     }

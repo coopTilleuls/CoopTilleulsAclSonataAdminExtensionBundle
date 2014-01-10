@@ -7,7 +7,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CoopTilleuls\Bundle\AclSonataAdminExtensionBundle;
+namespace MrGreenStuff\Bundle\AclSonataAdminExtensionBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -16,6 +16,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
-class CoopTilleulsAclSonataAdminExtensionBundle extends Bundle
+class MrGreenStuffAclSonataAdminExtensionBundle extends Bundle
 {
 }
