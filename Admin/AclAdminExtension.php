@@ -10,7 +10,7 @@
  * Enhanced by JUILLARD Yoann
  */
 
-namespace MrGreenStuff\Bundle\AclSonataAdminExtensionBundle\Admin;
+namespace CoopTilleuls\Bundle\AclSonataAdminExtensionBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -119,19 +119,10 @@ class AclAdminExtension extends AdminExtension
 				foreach ($entriesStmt->fetchAll() as $row) {
 					$idsMaster[] = $row['object_identifier'];
 				}
-				/*The method $admin->getPathToMasterACL() have to return an array (BE CAREFULL OF ORDER) like : 
-					array(
-						array('firstChild','c1'),
-						array('secondChild','c2'),
-						array('thirdChild','c3')
-						...
-					)
-					where the first argument is the name of the property relation and second a unique selector (TODO MADE NAME SELECTOR AUTOMATIC)
-				*/
 				$parents=$admin->getPathToMasterACL();
 				//HERE UPDATE THE QUERY
 				foreach($parents as $key=>$parent){
-					//FIRST shorcut is 'o'
+					//FIRST shorcut is 'o' (SONATA DEFAUL OBJECT)
 					if($key==0){
 						$query->leftJoin('o.'.$parent[0],$parent[1]);
 					}else{
@@ -142,7 +133,7 @@ class AclAdminExtension extends AdminExtension
 					if(($key+1)==count($parents)){
 						//HERE FOR OBJECT CREATED BY CURRENT USER
 						if(count($ids)){
-							//création de l'expression OR EXPRESSION
+							//OR WITH PARENTHESIS EXPRESSION
 							$orCondition = $query->expr()->orx();
 							$orCondition->add($query->expr()->in('o.id', ':ids'));
 							$orCondition->add($query->expr()->in($parent[1].'.id',':idsMaster'));
