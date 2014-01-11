@@ -6,11 +6,11 @@
 
 
     <parameters>
-        <parameter key="coop_tilleuls_acl_sonata_admin_extension.acl.extension.class">CoopTilleuls\Bundle\AclSonataAdminExtensionBundle\Admin\AclAdminExtension</parameter>
+        <parameter key="mr_green_stuff_acl_sonata_admin_extension.acl.extension.class">MrGreenStuff\Bundle\AclSonataAdminExtensionBundle\Admin\AclAdminExtension</parameter>
     </parameters>
 
     <services>
-        <service id="coop_tilleuls_acl_sonata_admin_extension.acl.extension" class="%coop_tilleuls_acl_sonata_admin_extension.acl.extension.class%">
+        <service id="mr_green_stuff_acl_sonata_admin_extension.acl.extension" class="%mr_green_stuff_acl_sonata_admin_extension.acl.extension.class%">
             <argument type="service" id="security.context" />
             <argument type="service" id="security.acl.dbal.connection" />
             <tag name="sonata.admin.extension" global="true" />
