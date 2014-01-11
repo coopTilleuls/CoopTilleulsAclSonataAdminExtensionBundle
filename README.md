@@ -58,6 +58,9 @@ This extension is automatically enabled for all admins.
 - MainManager have OPERATOR ACL on all Countries so he can access to all shop and products of the matching country (even if ACL record for him not exists but because they have ACL access to the parent or the grand parent in this case all countries)
 - EnglandManager or FranceManager can acces to all shop and products of the matching coutry (even if the products or shop has been created by MainManager or the SUPER_ADMIN without ACLs for this users but because they have ACL acces to the parent or the grand parent in this case only one country)
 - Admin keep SUPER_ADMIN role (normal behavior)
+
+#### WHy it's better than duplicate ACLs at creation ?
+Because if you upate the ACL of your "Master ACL class" after creation you have to regenerate all the sub ACL, with a really huge database or with lot of relations the script to update ACL in this case will be very complex and slow to execute.
     
 ### Configuration :
 - Create method : getMasterACLclass() on your sonata admin classes (only classes where you want to enabled the behavior). This method must return a string of master entity ACL like :
