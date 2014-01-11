@@ -88,7 +88,7 @@ public function getPathToMasterACL(){
                 );
 }
 ```
-#### BE CAREFULL WHITH ORDER IN ARRAY IT MUST BE parent->grandParent->grandGrandParent... untill the MASTER ACL CLASS DEFINED ABOVE
+#### BE CAREFULL WITH ARRAY ORDER ! IT MUST BE parent->grandParent->grandGrandParent... untill the MASTER ACL CLASS DEFINED ABOVE
 
 
 ## TODO
