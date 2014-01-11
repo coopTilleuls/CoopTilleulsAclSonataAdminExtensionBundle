@@ -1,5 +1,5 @@
 {
-    "name": "mrgreenstuff/acl-sonata-admin-extension-bundle",
+    "name": "tilleuls/acl-sonata-admin-extension-bundle",
     "type": "symfony-bundle",
     "description": "ACL list filtering for SonataAdmin with MASTER ACL",
     "keywords": ["sonata", "admin", "acl"],
