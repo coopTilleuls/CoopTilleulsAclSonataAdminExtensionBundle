@@ -36,8 +36,69 @@ public function registerBundles()
 
 This extension is automatically enabled for all admins.
 
+
+
+## Special case (Master ACL Entity)
+#### Enhancement By JUILLARD YOANN
+
+### Application example :
+
+#### 3 Tables : Shop, Product and Country
+- Between this tables relation ManyToOne (1 Country have N Shop) (1 Shop have N products). It should be work on all relation types but it's not tested.
+
+#### 4 Users :
+
+- Admin (SUPER_ADMIN)
+- MainManager (NOT SUPER ADMIN !)
+- EnglandManager
+- FranceManager
+
+#### Behavior expected :
+
+- MainManager have OPERATOR ACL on all Countries so he can access to all shop and products of the matching country (even if ACL record for him not exists but because they have ACL access to the parent or the grand parent in this case all countries)
+- EnglandManager or FranceManager can acces to all shop and products of the matching coutry (even if the products or shop has been created by MainManager or the SUPER_ADMIN without ACLs for this users but because they have ACL acces to the parent or the grand parent in this case only one country)
+- Admin keep SUPER_ADMIN role (normal behavior)
+
+#### WHy it's better than duplicate ACLs at creation ?
+Because if you upate the ACL of your "Master ACL class" after creation you have to regenerate all the sub ACL, with a really huge database or with lot of relations the script to update ACL in this case will be very complex and slow to execute.
+    
+### Configuration :
+- Create method : getMasterACLclass() on your sonata admin classes (only classes where you want to enabled the behavior). This method must return a string of master entity ACL like :
+    
+```php
+/*In Shop and Product admin classes*/
+public function getMasterACLclass(){
+    return 'Acme\DemoBundle\Entity\Country';
+}
+```
+    
+- Create method getPathToMasterACL() on your sonata admin classes (only classes where you want to enabled the behavior).
+This method must return a array like :
+    
+```php
+/*In Shop admin class*/
+public function getPathToMasterACL(){
+    return  array(
+                array('coutry','c')
+                );
+}
+//Where 'country' is the property name of the Shop entity who made the relation with Country Entity and 'c' a unique identifier.
+//(IMPORTANT the unique shortcut identifier CANNOT BE 'o' because 'o' is the default identifier of Sonata Admin)
+    
+/*In Product admin class*/
+public function getPathToMasterACL(){
+    return  array(
+                 array('shop','s'),
+                 array('coutry','c')
+                );
+}
+```
+#### BE CAREFULL WITH ARRAY ORDER ! IT MUST BE parent->grandParent->grandGrandParent... untill the MASTER ACL CLASS DEFINED ABOVE
+
+
 ## TODO
 
+* Make global search filtering (didn't work actually) -> see [this issue](https://github.com/sonata-project/SonataAdminBundle/issues/1893)
 * Test with other DBMSs than MySQL
 * Write tests
 
@@ -45,6 +106,7 @@ This extension is automatically enabled for all admins.
 
 Created by [Kévin Dunglas](http://dunglas.fr) for [La Coopérative des Tilleuls](http://les-tilleuls.coop).
 
+Enhanced by JUILLARD Yoann
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/coopTilleuls/cooptilleulsaclsonataadminextensionbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
