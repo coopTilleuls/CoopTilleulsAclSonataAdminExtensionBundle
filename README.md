@@ -72,7 +72,8 @@ public function getMasterACLclass(){
 }
 ```
     
-- Create method getPathToMasterACL() on your sonata admin classes (only classes where you want to enabled the behavior). This method must return a array like :
+- Create method getPathToMasterACL() on your sonata admin classes (only classes where you want to enabled the behavior).
+This method must return a array like :
     
 ```php
 /*In Shop admin class*/
@@ -81,7 +82,8 @@ public function getPathToMasterACL(){
                 array('coutry','c')
                 );
 }
-//Where 'country' is the property name of the Shop entity who made the relation with Country Entity and 'c' a unique identifier (IMPORTANT the unique shortcut identifier CANNOT BE 'o' because 'o' is the default identifier of Sonata Admin)
+//Where 'country' is the property name of the Shop entity who made the relation with Country Entity and 'c' a unique identifier.
+//(IMPORTANT the unique shortcut identifier CANNOT BE 'o' because 'o' is the default identifier of Sonata Admin)
     
 /*In Product admin class*/
 public function getPathToMasterACL(){
