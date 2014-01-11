@@ -103,3 +103,4 @@ Created by [Kévin Dunglas](http://dunglas.fr) for [La Coopérative des Tilleuls
 Enhanced by JUILLARD Yoann
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/coopTilleuls/cooptilleulsaclsonataadminextensionbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+

@@ -152,9 +152,7 @@ class AclAdminExtension extends AdminExtension
                 ;
                 return;
 			}
-        }
-		
-		
+        }		
 		// Display an empty list
 		$query->andWhere('1 = 2');
     }
