@@ -97,7 +97,6 @@ class AclAdminExtension extends AdminExtension
             foreach ($entriesStmt->fetchAll() as $row) {
                 $ids[] = $row['object_identifier'];
             }
-			//IF THERE IS NOT DIRECT RESULT WE MADE A QUERY ON THE MASTER ACL CLASS
 			//Test if method getMasterACLclass and getPathToMasterACL exist on the admin CLASS -> SEE THE DOC
             if (method_exists($admin,'getMasterACLclass') && method_exists($admin,'getPathToMasterACL')) {
 				$classStmt = $this->databaseConnection->prepare('SELECT id FROM acl_classes WHERE class_type = :classType');
