@@ -96,6 +96,7 @@ public function getPathToMasterACL(){
 
 ## TODO
 
+* Make global search filtering (didn't work actually) -> see [this issue](https://github.com/sonata-project/SonataAdminBundle/issues/1893)
 * Test with other DBMSs than MySQL
 * Write tests
 
