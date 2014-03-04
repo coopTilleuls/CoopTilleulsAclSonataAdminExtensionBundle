@@ -51,7 +51,7 @@ class AclAdminExtension extends AdminExtension
      * @param  string              $context
      * @throws \RuntimeException
      */
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query)
     {
         // Don't filter for admins and for not ACL enabled classes and for command cli
         if (!$admin->isAclEnabled() || !$this->securityContext->getToken() || $admin->isGranted(sprintf($admin->getSecurityHandler()->getBaseRole($admin), 'ADMIN'))) {
