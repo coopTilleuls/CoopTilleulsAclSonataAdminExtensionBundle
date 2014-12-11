@@ -14,6 +14,9 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Symfony\Component\Security\Core\Role\Role;
+use Symfony\Component\Security\Core\Role\RoleHierarchy;
+use Symfony\Component\Security\Core\Role\RoleInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
@@ -34,13 +37,20 @@ class AclAdminExtension extends AdminExtension
     protected $databaseConnection;
 
     /**
+     * @var RoleHierarchy
+     */
+    protected $roleHierarchy;
+
+    /**
      * @param SecurityContextInterface $securityContext
      * @param Connection               $databaseConnection
+     * @param array                    $roleHierarchy
      */
-    public function __construct(SecurityContextInterface $securityContext, Connection $databaseConnection)
+    public function __construct(SecurityContextInterface $securityContext, Connection $databaseConnection, $roleHierarchy)
     {
         $this->securityContext = $securityContext;
         $this->databaseConnection = $databaseConnection;
+        $this->roleHierarchy = new RoleHierarchy($roleHierarchy);
     }
 
     /**
@@ -54,22 +64,50 @@ class AclAdminExtension extends AdminExtension
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
     {
         // Don't filter for admins and for not ACL enabled classes and for command cli
-        if (!$admin->isAclEnabled() || !$this->securityContext->getToken() || $admin->isGranted(sprintf($admin->getSecurityHandler()->getBaseRole($admin), 'ADMIN'))) {
+        if (
+            !$admin->isAclEnabled()
+            || !$this->securityContext->getToken()
+            || $admin->isGranted(sprintf($admin->getSecurityHandler()->getBaseRole($admin), 'ADMIN'))
+        ) {
             return;
         }
 
         // Retrieve current logged user SecurityIdentity
         $user = $this->securityContext->getToken()->getUser();
-        $securityIdentity = UserSecurityIdentity::fromAccount($user);
+        $userSecurityIdentity = UserSecurityIdentity::fromAccount($user);
 
-        // Get identity ACL identifier
-        $identifier = sprintf('%s-%s', $securityIdentity->getClass(), $securityIdentity->getUsername());
+        // Retrieve current logged user roles
+        $userRoles = $user->getRoles();
 
-        $identityStmt = $this->databaseConnection->prepare('SELECT id FROM acl_security_identities WHERE identifier = :identifier');
-        $identityStmt->bindValue('identifier', $identifier);
-        $identityStmt->execute();
+        // Find child roles
+        $roles = array();
+        foreach ($userRoles as $userRole) {
+            $roles[] = ($userRole instanceof RoleInterface) ? $userRole : new Role($userRole);
+        }
 
-        $identityId = $identityStmt->fetchColumn();
+        $reachableRoles = $this->roleHierarchy->getReachableRoles($roles);
+
+        // Get identity ACL user identifier
+        $identifiers[] = sprintf('%s-%s', $userSecurityIdentity->getClass(), $userSecurityIdentity->getUsername());
+
+        // Get identities ACL roles identifiers
+        foreach ($reachableRoles as $reachableRole) {
+            $role = $reachableRole->getRole();
+            if (!in_array($role, $identifiers)) {
+                $identifiers[] = $role;
+            }
+        }
+
+        $identityStmt = $this->databaseConnection->executeQuery(
+            'SELECT id FROM acl_security_identities WHERE identifier IN (?)',
+            array($identifiers),
+            array(Connection::PARAM_STR_ARRAY)
+        );
+
+        $identityIds = array();
+        foreach ($identityStmt->fetchAll() as $row) {
+            $identityIds[] = $row['id'];
+        }
 
         // Get class ACL identifier
         $classType = $admin->getClass();
@@ -79,15 +117,34 @@ class AclAdminExtension extends AdminExtension
 
         $classId = $classStmt->fetchColumn();
 
-        if ($identityId && $classId) {
-            $entriesStmt = $this->databaseConnection->prepare('SELECT object_identifier FROM acl_entries AS ae JOIN acl_object_identities AS aoi ON ae.object_identity_id = aoi.id WHERE ae.class_id = :classId AND ae.security_identity_id = :identityId AND (:view = ae.mask & :view OR :operator = ae.mask & :operator OR :master = ae.mask & :master OR :owner = ae.mask & :owner)');
-            $entriesStmt->bindValue('classId', $classId);
-            $entriesStmt->bindValue('identityId', $identityId);
-            $entriesStmt->bindValue('view', MaskBuilder::MASK_VIEW);
-            $entriesStmt->bindValue('operator', MaskBuilder::MASK_OPERATOR);
-            $entriesStmt->bindValue('master', MaskBuilder::MASK_MASTER);
-            $entriesStmt->bindValue('owner', MaskBuilder::MASK_OWNER);
-            $entriesStmt->execute();
+        if (!empty($identityIds) && $classId) {
+            $entriesStmt = $this->databaseConnection->executeQuery(
+                'SELECT DISTINCT object_identifier FROM acl_entries AS ae JOIN acl_object_identities AS aoi ON ae.object_identity_id = aoi.id WHERE ae.class_id = ? AND ae.security_identity_id IN (?) AND (? = ae.mask & ? OR ? = ae.mask & ? OR ? = ae.mask & ? OR ? = ae.mask & ?)',
+                array(
+                    $classId,
+                    $identityIds,
+                    MaskBuilder::MASK_VIEW,
+                    MaskBuilder::MASK_VIEW,
+                    MaskBuilder::MASK_OPERATOR,
+                    MaskBuilder::MASK_OPERATOR,
+                    MaskBuilder::MASK_MASTER,
+                    MaskBuilder::MASK_MASTER,
+                    MaskBuilder::MASK_OWNER,
+                    MaskBuilder::MASK_OWNER
+                ),
+                array(
+                    \PDO::PARAM_INT,
+                    Connection::PARAM_INT_ARRAY,
+                    \PDO::PARAM_INT,
+                    \PDO::PARAM_INT,
+                    \PDO::PARAM_INT,
+                    \PDO::PARAM_INT,
+                    \PDO::PARAM_INT,
+                    \PDO::PARAM_INT,
+                    \PDO::PARAM_INT,
+                    \PDO::PARAM_INT
+                )
+            );
 
             $ids = array();
             foreach ($entriesStmt->fetchAll() as $row) {
