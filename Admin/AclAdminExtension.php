@@ -46,8 +46,11 @@ class AclAdminExtension extends AdminExtension
      * @param Connection               $databaseConnection
      * @param array                    $roleHierarchy
      */
-    public function __construct(SecurityContextInterface $securityContext, Connection $databaseConnection, $roleHierarchy)
-    {
+    public function __construct(
+        SecurityContextInterface $securityContext,
+        Connection $databaseConnection,
+        array $roleHierarchy = array()
+    ) {
         $this->securityContext = $securityContext;
         $this->databaseConnection = $databaseConnection;
         $this->roleHierarchy = new RoleHierarchy($roleHierarchy);
