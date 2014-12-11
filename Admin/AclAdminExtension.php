@@ -153,7 +153,7 @@ class AclAdminExtension extends AdminExtension
 
             if (count($ids)) {
                 $query
-                    ->andWhere('o.id IN (:ids)')
+                    ->andWhere('o IN (:ids)')
                     ->setParameter('ids', $ids)
                 ;
 
