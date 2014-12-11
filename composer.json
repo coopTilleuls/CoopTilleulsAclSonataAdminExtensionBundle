@@ -13,7 +13,8 @@
         }
     ],
     "require": {
-        "sonata-project/admin-bundle": "~2.2,>=2.2.2"
+        "sonata-project/admin-bundle": "~2.2,>=2.2.2",
+        "doctrine/dbal": "~2.2"
     },
     "autoload": {
         "psr-0": { "CoopTilleuls\\Bundle\\AclSonataAdminExtensionBundle": "" }
