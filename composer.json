@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "sonata-project/admin-bundle": "~2.2,>=2.2.2",
+        "sonata-project/admin-bundle": "^2.2.2|^3.0",
         "doctrine/dbal": "~2.2"
     },
     "autoload": {
@@ -22,7 +22,7 @@
     "target-dir": "CoopTilleuls/Bundle/AclSonataAdminExtensionBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.3.x-dev"
+            "dev-master": "2.0.x-dev"
         }
     }
 }
