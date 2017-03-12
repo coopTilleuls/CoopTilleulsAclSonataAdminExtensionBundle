@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use  Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
 /**
@@ -47,7 +48,7 @@ class AclAdminExtension extends AdminExtension
      * @param array                    $roleHierarchy
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        TokenStorage $securityContext,
         Connection $databaseConnection,
         array $roleHierarchy = array()
     ) {
