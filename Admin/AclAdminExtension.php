@@ -1,27 +1,29 @@
 <?php
 
 /*
+ * This file is part of the CoopTilleulsAclSonataAdminExtensionBundle package.
+ *
  * (c) La Coopérative des Tilleuls <contact@les-tilleuls.coop>
  *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CoopTilleuls\Bundle\AclSonataAdminExtensionBundle\Admin;
 
+use Doctrine\DBAL\Connection;
 use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Doctrine\DBAL\Connection;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
 /**
- * Admin extension filtering the list
+ * Admin extension filtering the list.
  *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
@@ -57,11 +59,12 @@ class AclAdminExtension extends AdminExtension
     }
 
     /**
-     * Filters with ACL
+     * Filters with ACL.
      *
-     * @param  AdminInterface      $admin
-     * @param  ProxyQueryInterface $query
-     * @param  string              $context
+     * @param AdminInterface      $admin
+     * @param ProxyQueryInterface $query
+     * @param string              $context
+     *
      * @throws \RuntimeException
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
@@ -133,7 +136,7 @@ class AclAdminExtension extends AdminExtension
                     MaskBuilder::MASK_MASTER,
                     MaskBuilder::MASK_MASTER,
                     MaskBuilder::MASK_OWNER,
-                    MaskBuilder::MASK_OWNER
+                    MaskBuilder::MASK_OWNER,
                 ),
                 array(
                     \PDO::PARAM_INT,
@@ -145,7 +148,7 @@ class AclAdminExtension extends AdminExtension
                     \PDO::PARAM_INT,
                     \PDO::PARAM_INT,
                     \PDO::PARAM_INT,
-                    \PDO::PARAM_INT
+                    \PDO::PARAM_INT,
                 )
             );
 
