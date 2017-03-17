@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface\TokenStorageInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
 /**
@@ -48,13 +48,12 @@ class AclAdminExtension extends AdminExtension
      * @param array                    $roleHierarchy
      */
     public function __construct(
-        $securityContext,
+        $tokenStorage,
         Connection $databaseConnection,
         array $roleHierarchy = array()
     ) {
-        if (!($securityContext instanceof SecurityContextInterface) // check type of $securityContext
-                && !($securityContext instanceof TokenInterface)) {
-            throw new InvalidArgumentException('$securityContext must be an instanse of SecurityContextInterface or of TokenInterface '
+        if (!$tokenStorage instanceof TokenStorageInterface && !$tokenStorage instanceof SecurityContextInterface) {
+            throw new \InvalidArgumentException('$securityContext must be an instanse of SecurityContextInterface or of TokenInterface '
                     . 'but [' .  get_class($securityContext) . '] given.');
             
         }
