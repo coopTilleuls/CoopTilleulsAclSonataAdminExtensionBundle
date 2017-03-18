@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -33,5 +34,13 @@ class CoopTilleulsAclSonataAdminExtensionExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+        
+        $definition = $container->getDefinition('coop_tilleuls_acl_sonata_admin_extension.acl.extension');
+        
+        if (interface_exists(TokenStorageInterface::class)) {
+            $definition->replaceArgument(0 ,new Reference('security.token_storage'));  
+        } else {
+            $definition->replaceArgument(0, new Reference('security.context'));
+        }
     }
 }

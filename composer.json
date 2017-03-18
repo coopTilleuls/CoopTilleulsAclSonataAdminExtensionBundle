@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "sonata-project/admin-bundle": "^2.2.2|^3.0",
+        "sonata-project/admin-bundle": "^2.2.2|^3.2",
         "doctrine/dbal": "~2.2"
     },
     "autoload": {
