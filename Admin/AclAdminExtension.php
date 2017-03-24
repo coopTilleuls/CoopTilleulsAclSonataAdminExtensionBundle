@@ -53,9 +53,7 @@ class AclAdminExtension extends AdminExtension
         array $roleHierarchy = array()
     ) {
         if (!$tokenStorage instanceof TokenStorageInterface && !$tokenStorage instanceof SecurityContextInterface) {
-            throw new \InvalidArgumentException('$securityContext must be an instanse of SecurityContextInterface or of TokenInterface '
-                    . 'but [' .  get_class($tokenStorage) . '] given.');
-            
+            throw new \InvalidArgumentException('$tokenStorage must be an instance of Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface or Symfony\Component\Security\Core\SecurityContextInterface.');  
         }
         
         $this->securityContext = $tokenStorage;
