@@ -32,9 +32,9 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 class AclAdminExtension extends AdminExtension
 {
     /**
-     * @var SecurityContextInterface
+     * @var SecurityContextInterface|TokenStorageInterface
      */
-    protected $securityContext;
+    protected $tokenStorage;
     /**
      * @var Connection
      */
@@ -59,7 +59,7 @@ class AclAdminExtension extends AdminExtension
             throw new \InvalidArgumentException('$tokenStorage must be an instance of Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface or Symfony\Component\Security\Core\SecurityContextInterface.');  
         }
         
-        $this->securityContext = $tokenStorage;
+        $this->tokenStorage = $tokenStorage;
         $this->databaseConnection = $databaseConnection;
         $this->roleHierarchy = new RoleHierarchy($roleHierarchy);
     }
@@ -78,14 +78,14 @@ class AclAdminExtension extends AdminExtension
         // Don't filter for admins and for not ACL enabled classes and for command cli
         if (
             !$admin->isAclEnabled()
-            || !$this->securityContext->getToken()
+            || !$this->tokenStorage->getToken()
             || $admin->isGranted(sprintf($admin->getSecurityHandler()->getBaseRole($admin), 'ADMIN'))
         ) {
             return;
         }
 
         // Retrieve current logged user SecurityIdentity
-        $user = $this->securityContext->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
         $userSecurityIdentity = UserSecurityIdentity::fromAccount($user);
 
         // Retrieve current logged user roles
