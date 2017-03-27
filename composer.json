@@ -13,8 +13,9 @@
         }
     ],
     "require": {
-        "sonata-project/admin-bundle": "^2.2.2|^3.0",
-        "doctrine/dbal": "~2.2"
+        "sonata-project/admin-bundle": "^2.2.2 || ^3.0",
+        "symfony/dependency-injection": "^2.2 || ^3.0",
+        "doctrine/dbal": "^2.2"
     },
     "autoload": {
         "psr-0": { "CoopTilleuls\\Bundle\\AclSonataAdminExtensionBundle": "" }

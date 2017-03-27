@@ -14,6 +14,7 @@
             <argument />
             <argument type="service" id="security.acl.dbal.connection" />
             <argument>%security.role_hierarchy.roles%</argument>
+
             <tag name="sonata.admin.extension" global="true" />
         </service>
     </services>
