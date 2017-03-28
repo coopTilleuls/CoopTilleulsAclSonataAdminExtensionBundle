@@ -21,6 +21,7 @@ use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Admin extension filtering the list.
@@ -30,9 +31,9 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class AclAdminExtension extends AdminExtension
 {
     /**
-     * @var SecurityContextInterface
+     * @var SecurityContextInterface|TokenStorageInterface
      */
-    protected $securityContext;
+    protected $tokenStorage;
     /**
      * @var Connection
      */
@@ -44,16 +45,20 @@ class AclAdminExtension extends AdminExtension
     protected $roleHierarchy;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param Connection               $databaseConnection
-     * @param array                    $roleHierarchy
+     * @param SecurityContextInterface|TokenStorageInterface $tokenStorage
+     * @param Connection                                     $databaseConnection
+     * @param array                                          $roleHierarchy
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        $tokenStorage,
         Connection $databaseConnection,
         array $roleHierarchy = array()
     ) {
-        $this->securityContext = $securityContext;
+        if (!$tokenStorage instanceof TokenStorageInterface && !$tokenStorage instanceof SecurityContextInterface) {
+            throw new \InvalidArgumentException('$tokenStorage must be an instance of Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface or Symfony\Component\Security\Core\SecurityContextInterface.');  
+        }
+        
+        $this->tokenStorage = $tokenStorage;
         $this->databaseConnection = $databaseConnection;
         $this->roleHierarchy = new RoleHierarchy($roleHierarchy);
     }
@@ -72,14 +77,14 @@ class AclAdminExtension extends AdminExtension
         // Don't filter for admins and for not ACL enabled classes and for command cli
         if (
             !$admin->isAclEnabled()
-            || !$this->securityContext->getToken()
+            || !$this->tokenStorage->getToken()
             || $admin->isGranted(sprintf($admin->getSecurityHandler()->getBaseRole($admin), 'ADMIN'))
         ) {
             return;
         }
 
         // Retrieve current logged user SecurityIdentity
-        $user = $this->securityContext->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
         $userSecurityIdentity = UserSecurityIdentity::fromAccount($user);
 
         // Retrieve current logged user roles
