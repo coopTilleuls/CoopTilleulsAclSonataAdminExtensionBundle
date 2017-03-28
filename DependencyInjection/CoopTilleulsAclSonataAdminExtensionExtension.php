@@ -42,6 +42,6 @@ class CoopTilleulsAclSonataAdminExtensionExtension extends Extension
                         : 'security.context'
                 )
             )
-        ;  
+        ;
     }
 }
