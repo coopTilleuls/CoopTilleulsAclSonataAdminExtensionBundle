@@ -12,55 +12,35 @@
 namespace CoopTilleuls\Bundle\AclSonataAdminExtensionBundle\Admin;
 
 use Doctrine\DBAL\Connection;
-use Sonata\AdminBundle\Admin\AdminExtension;
+use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Role\Role;
-use Symfony\Component\Security\Core\Role\RoleHierarchy;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Core\Role\RoleInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Admin extension filtering the list.
  *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
-class AclAdminExtension extends AdminExtension
+class AclAdminExtension extends AbstractAdminExtension
 {
-    /**
-     * @var SecurityContextInterface|TokenStorageInterface
-     */
     protected $tokenStorage;
-    /**
-     * @var Connection
-     */
     protected $databaseConnection;
-
-    /**
-     * @var RoleHierarchy
-     */
     protected $roleHierarchy;
 
-    /**
-     * @param SecurityContextInterface|TokenStorageInterface $tokenStorage
-     * @param Connection                                     $databaseConnection
-     * @param array                                          $roleHierarchy
-     */
     public function __construct(
-        $tokenStorage,
+        TokenStorageInterface $tokenStorage,
         Connection $databaseConnection,
-        array $roleHierarchy = array()
+        RoleHierarchyInterface $roleHierarchy
     ) {
-        if (!$tokenStorage instanceof TokenStorageInterface && !$tokenStorage instanceof SecurityContextInterface) {
-            throw new \InvalidArgumentException('$tokenStorage must be an instance of Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface or Symfony\Component\Security\Core\SecurityContextInterface.');
-        }
-
         $this->tokenStorage = $tokenStorage;
         $this->databaseConnection = $databaseConnection;
-        $this->roleHierarchy = new RoleHierarchy($roleHierarchy);
+        $this->roleHierarchy = $roleHierarchy;
     }
 
     /**
@@ -93,7 +73,11 @@ class AclAdminExtension extends AdminExtension
         // Find child roles
         $roles = array();
         foreach ($userRoles as $userRole) {
-            $roles[] = ($userRole instanceof RoleInterface) ? $userRole : new Role($userRole);
+            if (!$userRole instanceof RoleInterface && !$userRole instanceof Role) {
+                $userRole = new Role($userRole);
+            }
+
+            $roles[] = $userRole;
         }
 
         $reachableRoles = $this->roleHierarchy->getReachableRoles($roles);
@@ -104,7 +88,7 @@ class AclAdminExtension extends AdminExtension
         // Get identities ACL roles identifiers
         foreach ($reachableRoles as $reachableRole) {
             $role = $reachableRole->getRole();
-            if (!in_array($role, $identifiers)) {
+            if (!in_array($role, $identifiers, true)) {
                 $identifiers[] = $role;
             }
         }
@@ -124,9 +108,18 @@ class AclAdminExtension extends AdminExtension
         $classType = $admin->getClass();
         $classStmt = $this->databaseConnection->prepare('SELECT id FROM acl_classes WHERE class_type = :classType');
         $classStmt->bindValue('classType', $classType);
-        $classStmt->execute();
+        if (method_exists($classStmt, 'executeQuery')) {
+            $classStmt->executeQuery();
+        } else {
+            $classStmt->execute();
+        }
 
-        $classId = $classStmt->fetchColumn();
+        $statement = $classStmt->getWrappedStatement();
+        if (method_exists($statement, 'fetchOne')) {
+            $classId = $statement->fetchOne();
+        } else {
+            $classId = $statement->fetchColumn();
+        }
 
         if (!empty($identityIds) && $classId) {
             $entriesStmt = $this->databaseConnection->executeQuery(
@@ -158,7 +151,8 @@ class AclAdminExtension extends AdminExtension
             );
 
             $ids = array();
-            foreach ($entriesStmt->fetchAll() as $row) {
+            $rows = method_exists($entriesStmt, 'fetchAllAssociative') ? $entriesStmt->fetchAllAssociative()  : $entriesStmt->fetchAll();
+            foreach ($rows as $row) {
                 $ids[] = $row['object_identifier'];
             }
 

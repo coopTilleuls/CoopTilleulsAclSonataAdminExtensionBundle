@@ -6,9 +6,9 @@
 
     <services>
         <service id="coop_tilleuls_acl_sonata_admin_extension.acl.extension" class="CoopTilleuls\Bundle\AclSonataAdminExtensionBundle\Admin\AclAdminExtension">
-            <argument />
+            <argument type="service" id="security.token_storage" />
             <argument type="service" id="security.acl.dbal.connection" />
-            <argument>%security.role_hierarchy.roles%</argument>
+            <argument type="service" id="security.role_hierarchy" />
 
             <tag name="sonata.admin.extension" global="true" />
         </service>
