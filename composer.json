@@ -13,17 +13,21 @@
         }
     ],
     "require": {
+        "php": "^7.2",
         "sonata-project/admin-bundle": "^2.2.2 || ^3.0",
         "symfony/dependency-injection": "^2.2 || ^3.0",
-        "doctrine/dbal": "^2.2"
+        "doctrine/dbal": "^2.2 || ^3.0",
+        "symfony/security-acl": "^3.0",
+        "symfony/security-core": "^3.4 || ^4.4"
     },
     "autoload": {
-        "psr-0": { "CoopTilleuls\\Bundle\\AclSonataAdminExtensionBundle": "" }
+        "psr-4": {
+            "CoopTilleuls\\Bundle\\AclSonataAdminExtensionBundle\\": "src/"
+        }
     },
-    "target-dir": "CoopTilleuls/Bundle/AclSonataAdminExtensionBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "dev-master": "3.x-dev"
         }
     }
 }
